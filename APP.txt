@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>인사 친구와 바르게 인사해요</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(#fff7fb, #eaf7ff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app {
+    width: 95%;
+    max-width: 430px;
+    height: 90vh;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+
+/* 시작 화면 */
+
+.start-screen {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    text-align:center;
+}
+
+.logo {
+    font-size:60px;
+}
+
+h1 {
+    color:#ff8fab;
+    font-size:30px;
+}
+
+.subtitle {
+    color:#555;
+    margin-bottom:30px;
+}
+
+
+input {
+    width:80%;
+    padding:15px;
+    border-radius:20px;
+    border:2px solid #ffd6e0;
+    font-size:20px;
+    text-align:center;
+}
+
+
+button {
+    margin-top:20px;
+    padding:15px 35px;
+    border:none;
+    border-radius:30px;
+    background:#ff9fba;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+
+button:hover {
+    transform:scale(1.05);
+}
+
+
+/* 채팅 화면 */
+
+.chat-screen {
+    display:none;
+    height:100%;
+    flex-direction:column;
+}
+
+
+.header {
+    background:#ffb6c9;
+    padding:15px;
+    color:white;
+    font-size:22px;
+    text-align:center;
+}
+
+
+.progress {
+    background:#fff0f5;
+    padding:10px;
+    text-align:center;
+}
+
+
+.chat {
+    flex:1;
+    padding:15px;
+    overflow-y:auto;
+}
+
+
+.message {
+    margin:10px 0;
+    max-width:80%;
+    padding:12px 15px;
+    border-radius:20px;
+    font-size:18px;
+    line-height:1.5;
+}
+
+
+.ai {
+    background:#f1f1f1;
+    align-self:flex-start;
+}
+
+
+.user {
+    background:#ffe0ec;
+    margin-left:auto;
+}
+
+
+.input-area {
+    display:flex;
+    padding:10px;
+}
+
+
+.input-area input {
+    flex:1;
+    width:auto;
+}
+
+
+.send {
+    margin:0 0 0 10px;
+    padding:10px 20px;
+    font-size:18px;
+}
+
+
+.star {
+    color:#ffd700;
+    font-size:22px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- 시작 화면 -->
+
+<div class="start-screen" id="start">
+
+<div class="logo">😊</div>
+
+<h1>
+인사 친구와<br>
+바르게 인사해요!
+</h1>
+
+
+<p class="subtitle">
+이름을 알려주면<br>
+인사 친구가 불러줄게요 💛
+</p>
+
+
+<input 
+id="nameInput"
+placeholder="내 이름 입력하기">
+
+
+<button onclick="startGame()">
+시작하기 🚀
+</button>
+
+
+</div>
+
+
+
+<!-- 채팅 화면 -->
+
+
+<div class="chat-screen" id="chatScreen">
+
+
+<div class="header">
+😊 인사 친구
+</div>
+
+
+<div class="progress">
+
+<span id="playerName"></span>의 인사 연습
+
+<br>
+
+<span class="star">
+⭐⭐⭐⭐⭐
+</span>
+
+</div>
+
+
+<div class="chat" id="chat">
+
+</div>
+
+
+<div class="input-area">
+
+<input 
+id="userInput"
+placeholder="인사를 입력해 보세요">
+
+<button class="send" onclick="sendMessage()">
+💬
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+let name = "";
+
+function startGame(){
+
+name = document.getElementById("nameInput").value.trim();
+
+
+if(name===""){
+alert("이름을 입력해주세요 😊");
+return;
+}
+
+
+localStorage.setItem("studentName",name);
+
+
+document.getElementById("start").style.display="none";
+
+document.getElementById("chatScreen").style.display="flex";
+
+
+document.getElementById("playerName").innerHTML =
+name+"";
+
+
+addAI(
+"안녕 "+name+"아! 😊<br>"+
+"나는 인사 친구야.<br>"+
+"오늘은 바른 인사를 연습해 볼까?"
+);
+
+
+setTimeout(()=>{
+
+addAI(
+"첫 번째 미션이야! 🌈<br>"+
+"학교에 가기 전에 부모님께 어떻게 인사하면 좋을까?"
+);
+
+},1000);
+
+
+}
+
+
+
+function addAI(text){
+
+let div=document.createElement("div");
+
+div.className="message ai";
+
+div.innerHTML=text;
+
+
+document.getElementById("chat").appendChild(div);
+
+scrollBottom();
+
+}
+
+
+
+function addUser(text){
+
+let div=document.createElement("div");
+
+div.className="message user";
+
+div.innerHTML=text;
+
+
+document.getElementById("chat").appendChild(div);
+
+scrollBottom();
+
+}
+
+
+
+function scrollBottom(){
+
+let chat=document.getElementById("chat");
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+
+function sendMessage(){
+
+let input=document.getElementById("userInput");
+
+let text=input.value.trim();
+
+
+if(text==="") return;
+
+
+addUser(text);
+
+input.value="";
+
+
+/* 다음 편에서 AI 판단 기능 추가 */
+
+addAI(
+"😊 좋은 생각이야!<br>"+
+"조금만 기다려 줘. 인사 친구가 생각하고 있어!"
+);
+
+
+}
+
+
+window.onload=function(){
+
+let saved=localStorage.getItem("studentName");
+
+if(saved){
+
+document.getElementById("nameInput").value=saved;
+
+}
+
+}
+
+
+</script>
+
+
+</body>
+</html>
